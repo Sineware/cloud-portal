@@ -1,20 +1,41 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {Text, Platform} from 'react-native';
+import {KeyboardAvoidingView, NativeBaseProvider, View} from "native-base";
+import Login from "./src/screens/Login";
+import {DarkTheme, DefaultTheme, NavigationContainer} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+
+import MainScreen from "./src/screens/main/MainScreen";
+import { navigationRef } from './src/RootNavigation';
+import HeaderBarContents from "./src/components/HeaderBarContents";
+import SideNavigationBar from "./src/components/SideNavigationBar";
+
+const Stack = createNativeStackNavigator();
+
+const PortalDefaultTheme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        background: 'white',
+    },
+};
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    return (
+        <NavigationContainer theme={PortalDefaultTheme} ref={navigationRef}>
+            <NativeBaseProvider>
+                <View flexDirection={"row"} height={"100%"}>
+                    <SideNavigationBar />
+                    <Stack.Navigator>
+                        <Stack.Screen name="Login" component={Login} options={{ title: "Sineware Cloud Services" }} />
+                        <Stack.Screen name="MainScreen" component={MainScreen} options={{ title: 'Sineware Cloud Services', headerRight: () => <HeaderBarContents /> }} />
+                    </Stack.Navigator>
+                </View>
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+                <Text style={{position: "absolute", bottom: 35, left: 10, color: "red"}}>SINEWARE INTERNAL BUILD - NOT FOR PRODUCTION USE</Text>
+                <Text style={{position: "absolute", bottom: 15, left: 10, color: "red"}}>Running on platform: "{Platform.OS}"</Text>
+                <StatusBar style="auto" />
+            </NativeBaseProvider>
+        </NavigationContainer>
+    );
+}
