@@ -14,14 +14,16 @@ class AppState {
     get userDetails() { return this._userDetails; }
 
     _orgID = "";
+    set orgID(orgID) { this._orgID = orgID };
+    get orgID() { return this._orgID }
 
     _loadingState = {loading: false, msg: ""};
     setLoadingState(loading, msg) { this._loadingState = {loading, msg}; }
     get loadingState() { return this._loadingState; }
 
-    _errorState = {msg: ""};
-    setErrorState(msg) {
-        this._errorState = {msg};
+    _errorState = {msg: "", fatal: false};
+    setErrorState(msg, fatal) {
+        this._errorState = {msg, fatal};
         this.setLoadingState(false); // Setting an error clears the loading state
     };
     get errorState() { return this._errorState };

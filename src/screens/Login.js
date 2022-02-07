@@ -43,7 +43,7 @@ function Login(props) {
                if(value !== null) {
                    console.log(value)
                    AppState.cloudKey = value;
-                   AppState.loggedIn = true;
+                   //AppState.loggedIn = true; Not yet, only in APICore
                    await connectWSGateway();
                } else {
                    AppState.setLoadingState(false);
